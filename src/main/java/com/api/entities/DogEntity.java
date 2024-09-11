@@ -3,6 +3,7 @@ package com.api.entities;
 import jakarta.persistence.*;
 
 import java.util.Date;
+import java.util.UUID;
 
 @Entity
 @Table(name = "dogs")
@@ -10,7 +11,7 @@ public class DogEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private String id;
+    private UUID id;
 
     private String nome;
 
@@ -18,12 +19,11 @@ public class DogEntity {
 
     private Date idade;
 
-
-    public String getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 

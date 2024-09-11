@@ -9,6 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class DogService {
@@ -32,5 +34,36 @@ public class DogService {
         List<DogEntity> dogEntity = dogReposity.findAll();
 
         return ResponseEntity.status(HttpStatus.OK).body(dogEntity);
+    }
+
+    public ResponseEntity<?> update(UUID id, DogDto dogDto) {
+        System.out.println("ID SERVICE: " + id);
+        System.out.println("DTO SERVICE: " + dogDto);
+        Optional<DogEntity> dog = dogReposity.findById(id);
+
+        if(dog.isEmpty()) {
+            throw new RuntimeException();
+        }
+
+        DogEntity dogEntity = dog.get();
+        dogEntity.setNome(dogDto.nome());
+        dogEntity.setRaca(dogDto.raca());
+        dogEntity.setIdade(dogDto.idade());
+
+        dogReposity.save(dogEntity);
+
+        return ResponseEntity.status(HttpStatus.OK).body("Dog atualizado!");
+    }
+
+    public ResponseEntity<?> delete(UUID id) {
+        Optional<DogEntity> dog = dogReposity.findById(id);
+
+        if(dog.isEmpty()) {
+            throw new RuntimeException();
+        }
+
+        dogReposity.delete(dog.get());
+
+        return ResponseEntity.status(HttpStatus.OK).body("dog deletado!");
     }
 }
